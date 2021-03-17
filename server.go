@@ -20,14 +20,20 @@ type requestData struct {
 }
 
 func main() {
-	r := gin.Default()
+	port := os.Getenv("PORT")
 
+	if port == "" {
+		log.Fatal("$PORT must be set")
+	}
+
+	r := gin.Default()
+	r.Use(gin.Logger())
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"reply": "pong"})
 	})
 	r.POST("/send_mail", mailer)
 
-	r.Run()
+	r.Run(":" + port)
 }
 
 func mailer(c *gin.Context) {
