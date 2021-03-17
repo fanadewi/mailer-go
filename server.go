@@ -20,6 +20,11 @@ type requestData struct {
 }
 
 func main() {
+	// load env
+	dotenvErr := godotenv.Load()
+	if dotenvErr != nil {
+		log.Fatal("Error loading .env file")
+	}
 	port := os.Getenv("PORT")
 
 	if port == "" {
@@ -38,11 +43,6 @@ func main() {
 
 func mailer(c *gin.Context) {
 	log.Println(c.MultipartForm())
-	// load env
-	dotenvErr := godotenv.Load()
-	if dotenvErr != nil {
-		log.Fatal("Error loading .env file")
-	}
 
 	// setup template
 	t := template.New("template.html")
